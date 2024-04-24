@@ -15,7 +15,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="../js/script.js"></script>
+<script src="script.js"></script>
 <header>
     <nav class="navbar navbar-expand-md navbar-white bg-white">
         <div class="container">
@@ -30,7 +30,7 @@
 
             <ul class="navbar-nav d-none d-lg-block">
                 <li class="nav-item">
-                    <a class="nav-link" href="product_list.blade.php">PRODUCTS</a>
+                    <a class="nav-link" href="/product_list">PRODUCTS</a>
                 </li>
             </ul>
 
@@ -43,31 +43,33 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto d-lg-none">
                     <li class="nav-item">
-                        <a class="nav-link" href="product_list.blade.php">PRODUCTS</a>
+                        <a class="nav-link" href="/product_list">PRODUCTS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="shopping_cart.blade.php">CART</a>
+                        <a class="nav-link" href="/shopping_cart">CART</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="account.html">ACCOUNT</a>
+                        <a class="nav-link" href="/account">ACCOUNT</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">CONTACT</a>
                     </li>
+
                 </ul>
             </div>
 
 
             <ul class="navbar-nav d-none d-lg-block">
                 <li class="nav-item">
-                    <a class="nav-link" href="shopping_cart.blade.php">CART</a>
+                    <a class="nav-link" href="/shopping_cart">CART</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="account.html">ACCOUNT</a>
+                    <a class="nav-link" href="/account">ACCOUNT</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">CONTACT</a>
                 </li>
+
             </ul>
         </div>
     </nav>
@@ -89,17 +91,17 @@
 
         </div>
         <div class="row">
-            <a href="register.blade.php"><button type="button" class="register-button">REGISTER NOW</button></a>
+            <a href="/register"><button type="button" class="register-button">REGISTER NOW</button></a>
         </div>
     </div>
 </div>
 
 <div class="home">
-    <div class="container-fluid bg-dark">
-        <div class="container">
+    <div class="container-fluid bg-dark px-0">
+        <div class="container px-0">
             <div class="row">
-                <div class="col">
-                    <a href="product_list.blade.php">
+                <div class="col px-0  d-flex justify-content-center">
+                    <a href="/product_list">
                         <div class="category">
                             <div class="category-image">
                                 <img src="img/on_sale_icon.png">
@@ -110,8 +112,8 @@
                         </div>
                     </a>
                 </div>
-                <div class="col">
-                    <a href="product_list.blade.php">
+                <div class="col px-0  d-flex justify-content-center">
+                    <a href="/product_list">
                         <div class="category">
                             <div class="category-image">
                                 <img src="img/figures_category.jpg">
@@ -122,8 +124,8 @@
                         </div>
                     </a>
                 </div>
-                <div class="col">
-                    <a href="product_list.blade.php">
+                <div class="col px-0  d-flex justify-content-center">
+                    <a href="/product_list">
                         <div class="category">
                             <div class="category-image">
                                 <img src="img/manga_category.jpg">
@@ -137,199 +139,7 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <p class="section-title">PICKED FOR YOU</p>
-        </div>
-        <div class="product-list-product-section">
-            <div class="row">
-                <div class="col">
-                    <div class="product">
-                        <div class="product-menu">
-                            <p class="product-title">Hell's Paradise: Jigokuraku, Vol. 5</p>
-                            <p class="product-author">YUJI KAKU</p>
-                            <div class="wrapper">
-                                <div class="product-desc">Even an invincible ninja may not be able to survive Hell's Paradise!
-                                    Gabimaru is a ninja on death row with one chance to see his wife again—by finding the elixir of
-                                    immortality on a supernatural island and delivering it to the shogun. Standing in his way are his
-                                    fellow convicts and the fearsome beasts that roam the island, devouring or killing anyone they
-                                    encounter.
 
-                                    Gabimaru and his companions are confronted with the mysteries of tao, the supernatural phenomenon
-                                    that turns the beings known as Lord Tensen into fearsome enemies. And when Gabimaru begins acting
-                                    strangely, is there any hope for his companions, or will they face certain death at his hands?
-                                </div>
-                            </div>
-                            <a href="product_detail.blade.php" class="detail">Detail</a>
-                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                        </div>
-                        <div class="product-image">
-                            <img src="img/jigokuraku5.jpg">
-                        </div>
-                        <span class="overlay-cost">10.00€</span>
-                        <span class="overlay-discount">-20%<br>8.00€</span>
-
-
-                    </div>
-
-                </div>
-                <div class="col">
-                    <div class="product">
-                        <div class="product-menu">
-                            <p class="product-title">The Quintessential Quintuplets 1</p>
-                            <p class="product-author">NEGI HARUBA</p>
-                            <div class="wrapper">
-                                <div class="product-desc">
-                                    A high school romantic comedy with five times the cute girls! A high school boy must work part-time
-                                    to help five sisters study so they can graduate, but the only thing these quintuplets have in common
-                                    is that they all hate studying!
-
-                                    FIVE TIMES THE TROUBLE
-
-                                    Five girls who want to do anything but study, and their tutor: A high school boy who's got book
-                                    smarts and not much else. Futaro Uesugi took the tutoring gig because he was desperate for cash, but
-                                    when his students--the five beautiful daughters of a wealthy businessman--find five times the
-                                    excuses to slack off, what can he do?! At this rate, the sisters won't graduate, so if he wants to
-                                    get paid, Futaro must think of a plan to suit each of them... Which feels hopeless when five out of
-                                    five of them think he's a loser!
-                                </div>
-                            </div>
-                            <a href="product_detail.blade.php" class="detail">Detail</a>
-                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                        </div>
-                        <div class="product-image">
-                            <img src="img/quints.jpg">
-                        </div>
-                        <span class="overlay-cost">10.84€</span>
-
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="product">
-                        <div class="product-menu">
-                            <p class="product-title">Demon Slayer: Kimetsu no Yaiba B-Style Rengoku Kyojuro (Complete Edition) 1/4 Scale Figure</p>
-                            <p class="product-author"></p>
-                            <div class="wrapper">
-                                <div class="product-desc">
-                                    "Set your heart ablaze and go beyond your limits! I am Kyojuro Rengoku, the Flame Hashira!!"
-
-                                    From the anime series "Demon Slayer: Kimetsu no Yaiba" comes a 1/4 scale figure of Kyojuro Rengoku, the Flame Hashira! Kyojuro has been captured in figure form in the instant before he unleashes his "Flame Breathing Esoteric Art Ninth Form: Rengoku" attack.
-
-                                    Kyojuro's wounds on his abdomen and face sustained while locked in a life or death struggle, his combat-worn haori coat and Demon Slayer Corps uniform have been faithfully preserved in figure form. Featuring a stunning amount of detail due to the impressive 1/4 scale size, this figure is a must-see for fans of the series!
-
-                                    The Complete Edition also features an enormous flame effect part over 27.5 inches in height on a special base, making for an incredible recreation of a memorable scene.
-                                </div>
-                            </div>
-                            <a href="product_detail.blade.php" class="detail">Detail</a>
-                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                        </div>
-                        <div class="product-image">
-                            <img src="img/rengoku.jpg">
-                        </div>
-                        <span class="overlay-cost">26.99€</span>
-                        <span class="overlay-discount">-10%<br>24,29€</span>
-
-
-
-                    </div>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="product">
-                        <div class="product-menu">
-                            <p class="product-title">Hell's Paradise: Jigokuraku, Vol. 1</p>
-                            <p class="product-author">YUJI KAKU</p>
-                            <div class="wrapper">
-                                <div class="product-desc">Even an invincible ninja may not be able to survive Hell's Paradise!
-                                    Gabimaru is a ninja on death row with one chance to see his wife again—by finding the elixir of
-                                    immortality on a supernatural island and delivering it to the shogun. Standing in his way are his
-                                    fellow convicts and the fearsome beasts that roam the island, devouring or killing anyone they
-                                    encounter.
-
-                                    Gabimaru and his companions are confronted with the mysteries of tao, the supernatural phenomenon
-                                    that turns the beings known as Lord Tensen into fearsome enemies. And when Gabimaru begins acting
-                                    strangely, is there any hope for his companions, or will they face certain death at his hands?
-                                </div>
-                            </div>
-                            <a href="product_detail.blade.php" class="detail">Detail</a>
-                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                        </div>
-                        <div class="product-image">
-                            <img src="img/jigokuraku1.jpg">
-                        </div>
-                        <span class="overlay-cost">10.00€</span>
-
-
-                    </div>
-
-                </div>
-                <div class="col">
-                    <div class="product">
-                        <div class="product-menu">
-                            <p class="product-title">The Quintessential Quintuplets 1</p>
-                            <p class="product-author">NEGI HARUBA</p>
-                            <div class="wrapper">
-                                <div class="product-desc">
-                                    A high school romantic comedy with five times the cute girls! A high school boy must work part-time
-                                    to help five sisters study so they can graduate, but the only thing these quintuplets have in common
-                                    is that they all hate studying!
-
-                                    FIVE TIMES THE TROUBLE
-
-                                    Five girls who want to do anything but study, and their tutor: A high school boy who's got book
-                                    smarts and not much else. Futaro Uesugi took the tutoring gig because he was desperate for cash, but
-                                    when his students--the five beautiful daughters of a wealthy businessman--find five times the
-                                    excuses to slack off, what can he do?! At this rate, the sisters won't graduate, so if he wants to
-                                    get paid, Futaro must think of a plan to suit each of them... Which feels hopeless when five out of
-                                    five of them think he's a loser!
-                                </div>
-                            </div>
-                            <a href="product_detail.blade.php" class="detail">Detail</a>
-                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                        </div>
-                        <div class="product-image">
-                            <img src="img/quints.jpg">
-                        </div>
-                        <span class="overlay-cost">10.84€</span>
-
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="product">
-                        <div class="product-menu">
-                            <p class="product-title">Oshi no Ko MEMcho (Plain Clothes Ver.) Figure</p>
-                            <p class="product-author"></p>
-                            <div class="wrapper">
-                                <div class="product-desc">
-                                    Banpresto is proud to introduce a new figure from the smash hit anime series Oshi no Ko: the pop
-                                    star MEMcho! Dressed in plain clothes, she's ready to start her day
-                                </div>
-                            </div>
-                            <a href="product_detail.blade.php" class="detail">Detail</a>
-                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                        </div>
-                        <div class="product-image">
-                            <img src="img/mem.jpg">
-                        </div>
-                        <span class="overlay-cost">26.99€</span>
-                        <span class="overlay-discount">-10%<br>24,29€</span>
-
-
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 
@@ -339,17 +149,17 @@
             <div class="col-12 col-md-2">
                 <ul>
                     <li>ACCOUNT</li>
-                    <li><a href="login.blade.php">Login</a></li>
-                    <li><a href="register.blade.php">Register</a></li>
-                    <li><a href="shopping_cart.blade.php">Shopping Cart</a></li>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                    <li><a href="/shopping_cart">Shopping Cart</a></li>
                 </ul>
             </div>
             <div class="col-12 col-md-2">
                 <ul>
                     <li>Products</li>
-                    <li><a href="product_list.blade.php">Best-Sellers</a></li>
-                    <li><a href="product_list.blade.php">Manga</a></li>
-                    <li><a href="product_list.blade.php">Figures</a></li>
+                    <li><a href="/product_list">Best-Sellers</a></li>
+                    <li><a href="/product_list">Manga</a></li>
+                    <li><a href="/product_list">Figures</a></li>
                 </ul>
             </div>
             <div class="col-12 col-md-2">
