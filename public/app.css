@@ -418,6 +418,7 @@ footer img{
     font-size: x-large;
     font-weight: bold;
     color: #a0a0a0;
+    margin-bottom: 100px;
   }
 .product-detail .product-id{
   font-family: "Inter", sans-serif;
@@ -429,10 +430,18 @@ footer img{
     display:inline-flex;
     width: fit-content;
     font-weight: bold;
-    color: #14AE5C;
     font-family: "Inter", sans-serif;
     font-size: x-large;
   }
+
+.in-stock{
+    color: #14AE5C;
+}
+
+.out-of-stock{
+    color: #F24822;
+}
+
   .product-detail .product-price{
     margin-top: 50px;
     display:inline-flex;
@@ -467,12 +476,16 @@ footer img{
     transform: rotate(20deg);
 
   }
-  .product-detail .amount-select{
+  .product-detail .quantity-select {
     position: relative;
     left:50%;
     width:50px;
-    background-color: #FFF;
+
     font-family: "Inter", sans-serif;
+      border-radius: 99px;
+      border: none;
+      padding-top: 5px;
+      padding-bottom: 5px;
   }
 
   .product-detail .product-add{
@@ -1083,7 +1096,9 @@ input[type="radio"]:checked {
 .dashboard textarea{
   resize: none;
 }
-.category-select{
+
+
+.category-select, .quantity-select{
   width:200px;
   border-radius: 99px;
   border: none;
@@ -1152,7 +1167,7 @@ input[type="number"]{
   width:50%;
 }
 
-.add-product-button{
+.add-product-button, .add-category-button, .add-series-button, .add-series-button{
   width: 80%;
   min-width: 100px;
   color: #FFF;
@@ -1163,15 +1178,19 @@ input[type="number"]{
   font-weight: bold;
   padding: 10px;
 }
-#addProductModal, #editProductModal{
+#addProductModal, #editProductModal #addCategoryModal, #addSeriesModal, #failureModal, #successModal{
   font-family: "Inter", "sans-serif";
 }
-#addProductModal .modal-content ,#editProductModal .modal-content{
+#addProductModal .modal-content ,#editProductModal .modal-content, #addCategoryModal .modal-content, #addSeriesModal .modal-content, #failureModal .modal-content, #successModal .modal-content{
   background-color: #212529;
 }
-#addProductModal .btn-primary, #editProductModal .btn-primary{
+#addProductModal .btn-primary, #editProductModal .btn-primary, #addCategoryModal .btn-primary, #addSeriesModal .btn-primary{
   background-color:#8C69EF;
   border-color: #8C69EF;
+}
+
+#successModal .modal-body, #failureModal .modal-body{
+    color: #9C9C9C;
 }
 
 .modal-title{
@@ -1240,7 +1259,7 @@ input[type="number"]{
 
 .product-list-background{
   height: fit-content;
-  margin-top: 200px;
+  margin-top: 100px;
   padding-top: 200px;
   padding-bottom: 100px;
   background-image: url("img/quints_background.jpg");

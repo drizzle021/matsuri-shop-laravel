@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('uuid')->primary();
             $table->uuid('user_id');
             $table->uuid('address_id');
             $table->uuid('payment_method_id');
@@ -21,10 +21,10 @@ return new class extends Migration
             $table->timestamps();
 
             //Foreign keys
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
-            $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onDelete('cascade');
-            $table->foreign('shipping_method_id')->references('id')->on('shipping_methods')->onDelete('cascade');
+            $table->foreign('user_id')->references('uuid')->on('users')->onDelete('cascade');
+            $table->foreign('address_id')->references('uuid')->on('shipping_addresses')->onDelete('cascade');
+            $table->foreign('payment_method_id')->references('uuid')->on('payment_methods')->onDelete('cascade');
+            $table->foreign('shipping_method_id')->references('uuid')->on('shipping_methods')->onDelete('cascade');
 
         });
     }

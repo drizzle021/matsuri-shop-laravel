@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Ramsey\Uuid\Uuid;
 
 return new class extends Migration
 {
@@ -12,9 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('uuid')->primary();
             $table->string('email', 320)->unique();
-            $table->string('password', 60);           // still needs bcrypt\
+            $table->string('password', 60);           // still needs bcrypt
+            $table->integer('matsuri_points');
             $table->enum('role', ['ADMIN', 'CUSTOMER']);
             $table->timestamps();                                   // created_at, updated_at
         });

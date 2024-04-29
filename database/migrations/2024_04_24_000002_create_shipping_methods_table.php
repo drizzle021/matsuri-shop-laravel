@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_methods', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create('shipping_methods', function (Blueprint $table) {
+            $table->uuid('uuid')->primary();
             $table->string('name', 15);
             $table->decimal('price');
             $table->timestamps();
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_methods');
+        Schema::dropIfExists('shipping_methods');
     }
 };

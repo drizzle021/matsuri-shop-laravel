@@ -18,18 +18,18 @@
 <header>
     <nav class="navbar navbar-expand-md navbar-white bg-white">
         <div class="container">
-            <a class="navbar-brand d-none d-lg-block" href="index.html">
-                <img src="img/logoAsset 1@4x.png" alt="Logo">
+            <a class="navbar-brand d-none d-lg-block" href="/">
+                <img src="/img/logoAsset 1@4x.png" alt="Logo">
             </a>
 
             <a class="navbar-brand d-block d-lg-none" href="index.html">
-                <img class="small-logo" src="img/logoAssetSmall 1@4x.png" alt="Logo">
+                <img class="small-logo" src="/img/logoAssetSmall 1@4x.png" alt="Logo">
             </a>
 
 
             <ul class="navbar-nav d-none d-lg-block">
                 <li class="nav-item">
-                    <a class="nav-link" href="product_list.html">PRODUCTS</a>
+                    <a class="nav-link" href="/product_list/0">PRODUCTS</a>
                 </li>
             </ul>
 
@@ -42,7 +42,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto d-lg-none">
                     <li class="nav-item">
-                        <a class="nav-link" href="product_list.html">PRODUCTS</a>
+                        <a class="nav-link" href="/product_list/0">PRODUCTS</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="shopping_cart.html">CART</a>
@@ -53,9 +53,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">CONTACT</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.html">DASHBOARD</a>
-                    </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a class="nav-link" href="dashboard.html">DASHBOARD</a>--}}
+{{--                    </li>--}}
                 </ul>
             </div>
 
@@ -70,9 +70,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">CONTACT</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="dashboard.html">DASHBOARD</a>
-                </li>
+{{--                <li class="nav-item">--}}
+{{--                    <a class="nav-link" href="dashboard.html">DASHBOARD</a>--}}
+{{--                </li>--}}
             </ul>
         </div>
     </nav>
@@ -89,76 +89,182 @@
                 <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="{{ route('addProduct') }}" id="add_product_form" method="POST" accept-charset="UTF-8" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+
                     <div class="form-group">
                         <label for="add-product-category" class="form-label">Category:</label>
-                        <select name="category-select" class="category-select" id="add-product-category" autocomplete="off">
-                            <option>Manga</option>
-                            <option>Figures</option>
-                            <option>Box Set</option>
-                            <option>Scale 1/8</option>
-                            <option>Scale 1/7</option>
+                        <select name="category_select" class="category-select" id="add-product-category" autocomplete="off">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->name }}">
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="add-product-series" class="form-label">Anime/Manga series:</label>
-                        <select name="series-select" class="category-select" id="add-product-series" autocomplete="off">
-                            <option>The Quintessential Quintuplets</option>
-                            <option>Hell's Paradise</option>
-                            <option>Nisekoi</option>
-                            <option>Oshi no ko</option>
-                            <option>Attack on Titan</option>
+                        <select name="series_select" class="category-select" id="add-product-series" autocomplete="off">
+                            @foreach ($series as $serie)
+                                <option value="{{ $serie->name }}">
+                                    {{ $serie->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="add-product-product-title" class="form-label">Product Title:</label>
-                        <input type="text" class="form-control" id="add-product-product-title">
+                        <input type="text" class="form-control" id="add_product_product_title" name="name" required>
                     </div>
                     <div class="form-group">
                         <label for="add-product-author" class="form-label">Author (optional):</label>
-                        <input type="text" class="form-control" id="add-product-author">
+                        <input type="text" class="form-control" id="add-product-author" name="author">
                     </div>
                     <div class="form-group">
                         <label for="add-product-pages" class="form-label">Pages (optional):</label>
-                        <input type="number" class="form-control" id="add-product-pages" min="0" value="0">
+                        <input type="number" class="form-control" id="add-product-pages" min="0" value="0" name="pages" required>
                     </div>
                     <div class="form-group">
                         <label for="add-product-publisher" class="form-label">Publisher:</label>
-                        <input type="text" class="form-control" id="add-product-publisher">
+                        <input type="text" class="form-control" id="add-product-publisher" name="publisher" required>
                     </div>
                     <div class="form-group">
                         <label for="add-product-dimensions" class="form-label">Dimensions:</label>
-                        <input type="text" class="form-control" id="add-product-dimensions">
+                        <input type="text" class="form-control" id="add-product-dimensions" name="dimensions" required>
                     </div>
                     <div class="form-group">
                         <label for="add-product-price" class="form-label">Price:</label>
-                        <input type="number" class="form-control" id="add-product-price" min="1" max="5000" step="0.01" value="20" >
+                        <input type="number" class="form-control" id="add-product-price" min="1" max="5000" step="0.01" value="20" name="price" required>
                     </div>
                     <div class="form-group">
                         <label for="add-product-discount" class="form-label">Discount:</label>
-                        <input type="number" class="form-control" id="add-product-discount" min="0" max="1" step="0.01" value="0">
+                        <input type="number" class="form-control" id="add-product-discount" min="0" max="1" step="0.01" value="0" name="discount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-product-stock" class="form-label">Stock:</label>
+                        <input type="number" class="form-control" id="add-product-stock" min="1" step="1" value="1" name="stock" required>
                     </div>
                     <div class="form-group">
                         <label for="add-product-description" class="form-label">Description:</label>
-                        <textarea class="form-control" id="add-product-description"></textarea>
+                        <textarea class="form-control" id="add-product-description" name="description" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="add-product-main-picture" class="form-label">Main image:</label>
-                        <input type="file" class="form-control" id="add-product-main-picture">
+                        <input type="file" class="form-control" id="add-product-main-picture" name="main_img" required>
                     </div>
                     <div class="form-group">
                         <label for="add-product-side-picture1" class="form-label">Side image 1:</label>
-                        <input type="file" class="form-control" id="add-product-side-picture1">
+                        <input type="file" class="form-control" id="add-product-side-picture1" name="side_img_1" required>
                     </div>
                     <div class="form-group">
                         <label for="add-product-side-picture2" class="form-label">Side image 2:</label>
-                        <input type="file" class="form-control" id="add-product-side-picture2">
+                        <input type="file" class="form-control" id="add-product-side-picture2" name="side_img_2" required>
                     </div>
 
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Add</button>
+                <button type="submit" form="add_product_form" class="btn btn-primary" onclick="this.form.submit()">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if(session('success'))
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Successfully Added</h5>
+                </div>
+                <div class="modal-body">
+                    {{ session('success') }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            $('#successModal').modal('show');
+        });
+    </script>
+@endif
+
+@if(session('failure'))
+    <div class="modal fade" id="failureModal" tabindex="-1" role="dialog" aria-labelledby="failureModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="failureModalLabel">Failure</h5>
+                </div>
+                <div class="modal-body">
+                    {{ session('failure') }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            $('#failureModal').modal('show');
+        });
+    </script>
+@endif
+
+
+<!-- Add Category Modal -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('addCategory') }}" id="add_category_form" method="POST" accept-charset="UTF-8">
+                    {{ csrf_field() }}
+
+                    <div class="form-group">
+                        <label for="add-category-title" class="form-label">Category Name:</label>
+                        <input type="text" class="form-control" id="add-category-title" name="name" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="add_category_form" class="btn btn-primary">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Series Modal -->
+<div class="modal fade" id="addSeriesModal" tabindex="-1" role="dialog" aria-labelledby="addSeriesModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSeriesModalLabel">Add Series</h5>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('addSeries') }}" id="add_series_form" method="POST" accept-charset="UTF-8">
+                    {{ csrf_field() }}
+
+                    <div class="form-group">
+                        <label for="add-series-title" class="form-label">Series Name:</label>
+                        <input type="text" class="form-control" id="add-series-title" name="name" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="add_series_form" class="btn btn-primary">Add</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -178,21 +284,21 @@
                     <div class="form-group">
                         <label for="edit-product-category" class="form-label">Category:</label>
                         <select name="category-select" class="category-select" id="edit-product-category" autocomplete="off">
-                            <option>Manga</option>
-                            <option>Figures</option>
-                            <option>Box Set</option>
-                            <option>Scale 1/8</option>
-                            <option>Scale 1/7</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->name }}">
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="edit-product-series" class="form-label">Anime/Manga series:</label>
                         <select name="series-select" class="category-select" id="edit-product-series" autocomplete="off">
-                            <option>The Quintessential Quintuplets</option>
-                            <option>Hell's Paradise</option>
-                            <option>Nisekoi</option>
-                            <option>Oshi no ko</option>
-                            <option>Attack on Titan</option>
+                            @foreach ($series as $serie)
+                                <option value="{{ $serie->name }}">
+                                    {{ $serie->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
@@ -261,6 +367,16 @@
                         <button class="add-product-button" type="button" data-toggle="modal" data-target="#addProductModal">ADD PRODUCT</button>
                     </div>
                 </div>
+                <div class="row my-2">
+                    <div class="d-flex justify-content-center col px-0 px-md-3 px-lg-4">
+                        <button class="add-category-button" type="button" data-toggle="modal" data-target="#addCategoryModal">ADD CATEGORY</button>
+                    </div>
+                </div>
+                <div class="row my-2">
+                    <div class="d-flex justify-content-center col px-0 px-md-3 px-lg-4">
+                        <button class="add-series-button" type="button" data-toggle="modal" data-target="#addSeriesModal">ADD SERIES</button>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -268,20 +384,27 @@
             <div class="row justify-content-center">
                 <div class="d-flex col-10 col-md-10 col-lg-3 justify-content-center px-0 px-md-3 px-lg-4 mx-lg-1">
                     <div class="container-fluid bg-dark product-list-filter-section p-4">
-                        <form method="GET" id="filter">
+                        <form action="{{ route('searchProduct', ['page'=>0]) }}" method="GET" id="product_list_search" accept-charset="UTF-8">
+                            {{ csrf_field() }}
+
                             <div class="row pb-5 mb-4">
                                 <label class="form-label" for="filter-range-price-min">Search: </label>
                                 <div class="col-10 mx-0 px-2">
                                     <input class="form-control" type="text" name="search">
                                 </div>
                                 <div class="col-1 mx-0 px-0">
-                                    <button class="product-list-search" form="product-list-search"></button>
+                                    <button type="submit" class="product-list-search" form="product_list_search"></button>
                                 </div>
-
                             </div>
 
+                        </form>
+
+
+                        <form action="{{ route('filterProduct') }}" method="GET" id="product_list_filter" accept-charset="UTF-8">
+                            {{ csrf_field() }}
+
                             <div class="row pb-3 justify-content-center">
-                                <button class="product-list-filter-button">FILTER</button>
+                                <button type="submit" class="product-list-filter-button" form="product_list_filter">FILTER</button>
                             </div>
                             <div class="row justify-content-center pb-3">
                                 <label class="form-label" for="filter-range-price-min">Price from (€):</label>
@@ -314,27 +437,13 @@
 
                                 <div class="collapse navbar-collapse" id="category">
                                     <ul class="navbar-nav ml-auto">
-                                        <li class="nav-item">
-                                            <input type="checkbox" value="manga" name="category">
-                                            <label>Manga</label>
-                                        </li>
-                                        <li class="nav-item">
-                                            <input type="checkbox" value="figures" name="category">
-                                            <label>Figures</label>
+                                        @foreach($categories as $category)
+                                            <li class="nav-item">
+                                                <input type="checkbox" value="{{ $category->name }}" name="category">
+                                                <label>{{ $category->name }}</label>
+                                            </li>
 
-                                        </li>
-                                        <li class="nav-item">
-                                            <input type="checkbox" value="box-set" name="category">
-                                            <label>Box set</label>
-                                        </li>
-                                        <li class="nav-item">
-                                            <input type="checkbox" value="scale1_7" name="category">
-                                            <label>Scale 1/7</label>
-                                        </li>
-                                        <li class="nav-item">
-                                            <input type="checkbox" value="scale1_8" name="category">
-                                            <label>Scale 1/8</label>
-                                        </li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
@@ -349,27 +458,13 @@
 
                                 <div class="collapse navbar-collapse " id="series">
                                     <ul class="navbar-nav ml-auto">
-                                        <li class="nav-item">
-                                            <input type="checkbox" name="series" value="quint">
-                                            <label>The Quintessential Quintuplets</label>
-                                        </li>
-                                        <li class="nav-item">
-                                            <input type="checkbox" name="series" value="hell">
-                                            <label>Hell's Paradise</label>
-                                        </li>
-                                        <li class="nav-item">
-                                            <input type="checkbox" name="series" value="nisekoi">
-                                            <label>Nisekoi</label>
-                                        </li>
-                                        <li class="nav-item">
-                                            <input type="checkbox" name="series" value="oshi">
-                                            <label>Oshi no ko</label>
+                                        @foreach($series as $serie)
+                                            <li class="nav-item">
+                                                <input type="checkbox" name="series" value="{{ $serie->name }}">
+                                                <label>{{ $serie->name }}</label>
+                                            </li>
 
-                                        </li>
-                                        <li class="nav-item">
-                                            <input type="checkbox" name="series" value="aot">
-                                            <label>Attack on Titan</label>
-                                        </li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
@@ -379,293 +474,54 @@
                 <div class="col-12 col-md-8 justify-content-center px-0">
                     <div class="container justify-content-center px-0">
                         <div class="product-list-product-section">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="product">
-                                        <div class="product-menu">
-                                            <p class="product-title">Hell's Paradise: Jigokuraku, Vol. 5</p>
-                                            <p class="product-author">YUJI KAKU</p>
-                                            <div class="wrapper">
-                                                <div class="product-desc">Even an invincible ninja may not be able to survive Hell's Paradise!
-                                                    Gabimaru is a ninja on death row with one chance to see his wife again—by finding the elixir of
-                                                    immortality on a supernatural island and delivering it to the shogun. Standing in his way are his
-                                                    fellow convicts and the fearsome beasts that roam the island, devouring or killing anyone they
-                                                    encounter.
+                            @for($i = 0; $i < count($products)/2; $i++)
+                                <div class="row">
+                                    @for($j = 0; $j < 2; $j++)
+                                        @if(2*$i+$j != count($products))
+                                        <div class="col">
+                                            <div class="product">
+                                                <div class="product-menu">
+                                                    <p class="product-title">{{ $products[2*$i+$j]->name }}</p>
+                                                    <p class="product-author">{{ $products[2*$i+$j]->author }}</p>
+                                                    <div class="wrapper">
+                                                        <div class="product-desc">
+                                                            {{ $products[2*$i+$j]->description }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-5">
+                                                            <a href="/product/{{ $products[2*$i+$j]->id }}" class="detail">Detail</a>
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <button class="edit-product-button" type="button" data-toggle="modal" data-target="#editProductModal">Edit</button>
+                                                        </div>
 
-                                                    Gabimaru and his companions are confronted with the mysteries of tao, the supernatural phenomenon
-                                                    that turns the beings known as Lord Tensen into fearsome enemies. And when Gabimaru begins acting
-                                                    strangely, is there any hope for his companions, or will they face certain death at his hands?
+                                                    </div>
+
+                                                    <!-- <button class="to-cart">Add to cart</button> -->
+
                                                 </div>
+                                                <div class="product-image">
+                                                    <img src="{{ asset('products') }}/{{ $products[2*$i+$j]->main_img }}">
+                                                </div>
+
+                                                <span class="overlay-cost">{{ $products[2*$i+$j]->price }}€</span>
+
+                                                @if($products[2*$i+$j]->discount > 0)
+                                                    <span class="overlay-discount">-{{ $products[2*$i+$j]->discount * 100 }}%<br>
+                                                    {{ number_format($products[2*$i+$j]->price - $products[2*$i+$j]->price * $products[2*$i+$j]->discount, 2, '.', ',' ) }}€</span>
+
+                                                @endif
+
+
+
                                             </div>
-                                            <div class="row">
-                                                <div class="col-5">
-                                                    <a href="product_detail.html" class="detail">Detail</a>
-                                                </div>
-                                                <div class="col-5">
-                                                    <button class="edit-product-button" type="button" data-toggle="modal" data-target="#editProductModal">Edit</button>
-                                                </div>
-
-                                            </div>
-
-                                            <!-- <button class="to-cart">Add to cart</button> -->
-
                                         </div>
-                                        <div class="product-image">
-                                            <img src="img/jigokuraku5.jpg">
-                                        </div>
-                                        <span class="overlay-cost">10.00€</span>
-                                        <span class="overlay-discount">-20%<br>8.00€</span>
-
-
-                                    </div>
+                                        @endif
+                                    @endfor
                                 </div>
-                                <div class="col">
-                                    <div class="product">
-                                        <div class="product-menu">
-                                            <p class="product-title">The Quintessential Quintuplets 1</p>
-                                            <p class="product-author">NEGI HARUBA</p>
-                                            <div class="wrapper">
-                                                <div class="product-desc">
-                                                    A high school romantic comedy with five times the cute girls! A high school boy must work part-time
-                                                    to help five sisters study so they can graduate, but the only thing these quintuplets have in common
-                                                    is that they all hate studying!
+                            @endfor
 
-                                                    FIVE TIMES THE TROUBLE
-
-                                                    Five girls who want to do anything but study, and their tutor: A high school boy who's got book
-                                                    smarts and not much else. Futaro Uesugi took the tutoring gig because he was desperate for cash, but
-                                                    when his students--the five beautiful daughters of a wealthy businessman--find five times the
-                                                    excuses to slack off, what can he do?! At this rate, the sisters won't graduate, so if he wants to
-                                                    get paid, Futaro must think of a plan to suit each of them... Which feels hopeless when five out of
-                                                    five of them think he's a loser!
-                                                </div>
-                                            </div>
-                                            <a href="product_detail.html" class="detail">Detail</a>
-                                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                                        </div>
-                                        <div class="product-image">
-                                            <img src="img/quints.jpg">
-                                        </div>
-                                        <span class="overlay-cost">10.84€</span>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="product">
-                                        <div class="product-menu">
-                                            <p class="product-title">Hell's Paradise: Jigokuraku, Vol. 1</p>
-                                            <p class="product-author">YUJI KAKU</p>
-                                            <div class="wrapper">
-                                                <div class="product-desc">Even an invincible ninja may not be able to survive Hell's Paradise!
-                                                    Gabimaru is a ninja on death row with one chance to see his wife again—by finding the elixir of
-                                                    immortality on a supernatural island and delivering it to the shogun. Standing in his way are his
-                                                    fellow convicts and the fearsome beasts that roam the island, devouring or killing anyone they
-                                                    encounter.
-
-                                                    Gabimaru and his companions are confronted with the mysteries of tao, the supernatural phenomenon
-                                                    that turns the beings known as Lord Tensen into fearsome enemies. And when Gabimaru begins acting
-                                                    strangely, is there any hope for his companions, or will they face certain death at his hands?
-                                                </div>
-                                            </div>
-                                            <a href="product_detail.html" class="detail">Detail</a>
-                                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                                        </div>
-                                        <div class="product-image">
-                                            <img src="img/jigokuraku1.jpg">
-                                        </div>
-                                        <span class="overlay-cost">10.00€</span>
-
-
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="product">
-                                        <div class="product-menu">
-                                            <p class="product-title">Oshi no Ko MEMcho (Plain Clothes Ver.) Figure</p>
-                                            <p class="product-author"></p>
-                                            <div class="wrapper">
-                                                <div class="product-desc">
-                                                    Banpresto is proud to introduce a new figure from the smash hit anime series Oshi no Ko: the pop
-                                                    star MEMcho! Dressed in plain clothes, she's ready to start her day
-                                                </div>
-                                            </div>
-                                            <a href="product_detail.html" class="detail">Detail</a>
-                                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                                        </div>
-                                        <div class="product-image">
-                                            <img src="img/mem.jpg">
-                                        </div>
-                                        <span class="overlay-cost">26.99€</span>
-                                        <span class="overlay-discount">-10%<br>24,29€</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="product">
-                                        <div class="product-menu">
-                                            <p class="product-title">Hell's Paradise: Jigokuraku, Vol. 1</p>
-                                            <p class="product-author">YUJI KAKU</p>
-                                            <div class="wrapper">
-                                                <div class="product-desc">Even an invincible ninja may not be able to survive Hell's Paradise!
-                                                    Gabimaru is a ninja on death row with one chance to see his wife again—by finding the elixir of
-                                                    immortality on a supernatural island and delivering it to the shogun. Standing in his way are his
-                                                    fellow convicts and the fearsome beasts that roam the island, devouring or killing anyone they
-                                                    encounter.
-
-                                                    Gabimaru and his companions are confronted with the mysteries of tao, the supernatural phenomenon
-                                                    that turns the beings known as Lord Tensen into fearsome enemies. And when Gabimaru begins acting
-                                                    strangely, is there any hope for his companions, or will they face certain death at his hands?
-                                                </div>
-                                            </div>
-                                            <a href="product_detail.html" class="detail">Detail</a>
-                                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                                        </div>
-                                        <div class="product-image">
-                                            <img src="img/jigokuraku1.jpg">
-                                        </div>
-                                        <span class="overlay-cost">10.00€</span>
-
-
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="product">
-                                        <div class="product-menu">
-                                            <p class="product-title">Oshi no Ko MEMcho (Plain Clothes Ver.) Figure</p>
-                                            <p class="product-author"></p>
-                                            <div class="wrapper">
-                                                <div class="product-desc">
-                                                    Banpresto is proud to introduce a new figure from the smash hit anime series Oshi no Ko: the pop
-                                                    star MEMcho! Dressed in plain clothes, she's ready to start her day
-                                                </div>
-                                            </div>
-                                            <a href="product_detail.html" class="detail">Detail</a>
-                                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                                        </div>
-                                        <div class="product-image">
-                                            <img src="img/mem.jpg">
-                                        </div>
-                                        <span class="overlay-cost">26.99€</span>
-                                        <span class="overlay-discount">-10%<br>24,29€</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="product">
-                                        <div class="product-menu">
-                                            <p class="product-title">Hell's Paradise: Jigokuraku, Vol. 1</p>
-                                            <p class="product-author">YUJI KAKU</p>
-                                            <div class="wrapper">
-                                                <div class="product-desc">Even an invincible ninja may not be able to survive Hell's Paradise!
-                                                    Gabimaru is a ninja on death row with one chance to see his wife again—by finding the elixir of
-                                                    immortality on a supernatural island and delivering it to the shogun. Standing in his way are his
-                                                    fellow convicts and the fearsome beasts that roam the island, devouring or killing anyone they
-                                                    encounter.
-
-                                                    Gabimaru and his companions are confronted with the mysteries of tao, the supernatural phenomenon
-                                                    that turns the beings known as Lord Tensen into fearsome enemies. And when Gabimaru begins acting
-                                                    strangely, is there any hope for his companions, or will they face certain death at his hands?
-                                                </div>
-                                            </div>
-                                            <a href="product_detail.html" class="detail">Detail</a>
-                                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                                        </div>
-                                        <div class="product-image">
-                                            <img src="img/jigokuraku1.jpg">
-                                        </div>
-                                        <span class="overlay-cost">10.00€</span>
-
-
-                                    </div>
-
-                                </div>
-                                <div class="col">
-                                    <div class="product">
-                                        <div class="product-menu">
-                                            <p class="product-title">Oshi no Ko MEMcho (Plain Clothes Ver.) Figure</p>
-                                            <p class="product-author"></p>
-                                            <div class="wrapper">
-                                                <div class="product-desc">
-                                                    Banpresto is proud to introduce a new figure from the smash hit anime series Oshi no Ko: the pop
-                                                    star MEMcho! Dressed in plain clothes, she's ready to start her day
-                                                </div>
-                                            </div>
-                                            <a href="product_detail.html" class="detail">Detail</a>
-                                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                                        </div>
-                                        <div class="product-image">
-                                            <img src="img/mem.jpg">
-                                        </div>
-                                        <span class="overlay-cost">26.99€</span>
-                                        <span class="overlay-discount">-10%<br>24,29€</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="product">
-                                        <div class="product-menu">
-                                            <p class="product-title">Hell's Paradise: Jigokuraku, Vol. 1</p>
-                                            <p class="product-author">YUJI KAKU</p>
-                                            <div class="wrapper">
-                                                <div class="product-desc">Even an invincible ninja may not be able to survive Hell's Paradise!
-                                                    Gabimaru is a ninja on death row with one chance to see his wife again—by finding the elixir of
-                                                    immortality on a supernatural island and delivering it to the shogun. Standing in his way are his
-                                                    fellow convicts and the fearsome beasts that roam the island, devouring or killing anyone they
-                                                    encounter.
-
-                                                    Gabimaru and his companions are confronted with the mysteries of tao, the supernatural phenomenon
-                                                    that turns the beings known as Lord Tensen into fearsome enemies. And when Gabimaru begins acting
-                                                    strangely, is there any hope for his companions, or will they face certain death at his hands?
-                                                </div>
-                                            </div>
-                                            <a href="product_detail.html" class="detail">Detail</a>
-                                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                                        </div>
-                                        <div class="product-image">
-                                            <img src="img/jigokuraku1.jpg">
-                                        </div>
-                                        <span class="overlay-cost">10.00€</span>
-
-
-                                    </div>
-
-                                </div>
-                                <div class="col">
-                                    <div class="product">
-                                        <div class="product-menu">
-                                            <p class="product-title">Oshi no Ko MEMcho (Plain Clothes Ver.) Figure</p>
-                                            <p class="product-author"></p>
-                                            <div class="wrapper">
-                                                <div class="product-desc">
-                                                    Banpresto is proud to introduce a new figure from the smash hit anime series Oshi no Ko: the pop
-                                                    star MEMcho! Dressed in plain clothes, she's ready to start her day
-                                                </div>
-                                            </div>
-                                            <a href="product_detail.html" class="detail">Detail</a>
-                                            <!-- <button class="to-cart">Add to cart</button> -->
-
-                                        </div>
-                                        <div class="product-image">
-                                            <img src="img/mem.jpg">
-                                        </div>
-                                        <span class="overlay-cost">26.99€</span>
-                                        <span class="overlay-discount">-10%<br>24,29€</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -678,21 +534,50 @@
 <div class="container">
     <div class="row d-flex justify-content-center">
         <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item mx-4">...</li>
-            <li class="page-item"><a class="page-link" href="#">8</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
+
+            {{-- first page active --}}
+            @if($currentPage == 0)
+                <li class="page-item active"><a class="page-link" href="/product_list/{{ $currentPage }}{{ isset($search) ? '?search='.$search : '' }}">{{ $currentPage +1 }}</a></li>
+
+                @if($pageCount > 2)
+                    <li class="page-item mx-4">...</li>
+                @endif
+
+                @if($pageCount > 1)
+                    <li class="page-item"><a class="page-link" href="/product_list/{{ $pageCount-1 }}{{ isset($search) ? '?search='.$search : '' }}">{{ $pageCount }}</a></li>
+
+                    <li class="page-item">
+                        <a class="page-link" href="/product_list/{{ $currentPage +1 }}{{ isset($search) ? '?search='.$search : '' }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                @endif
+
+            {{-- middle page active --}}
+{{--            @elseif()--}}
+
+
+
+            {{-- last page active --}}
+            @elseif($currentPage == $pageCount -1 && $pageCount > 1)
+                <li class="page-item">
+                    <a class="page-link" href="/product_list/{{ $currentPage -1 }}{{ isset($search) ? '?search='.$search : '' }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <li class="page-item"><a class="page-link" href="/product_list/0{{ isset($search) ? '?search='.$search : '' }}">1</a></li>
+
+                @if($pageCount > 2)
+                    <li class="page-item mx-4">...</li>
+                @endif
+
+                @if($pageCount > 1)
+                    <li class="page-item active"><a class="page-link" href="/product_list/{{ $pageCount-1 }}{{ isset($search) ? '?search='.$search : '' }}">{{ $pageCount }}</a></li>
+
+                @endif
+
+            @endif
         </ul>
     </div>
 </div>
@@ -726,7 +611,7 @@
                 </ul>
             </div>
             <div class="col-1 offset-3 d-md-block d-none">
-                <img src="img/logoAssetSmall 1@4x.png">
+                <img src="/img/logoAssetSmall 1@4x.png">
             </div>
         </div>
     </div>

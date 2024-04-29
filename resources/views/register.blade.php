@@ -86,10 +86,12 @@
 
         <div class="row align-items-center d-flex justify-content-center">
             <div class="col-md-5 form-container">
-                <form action="register.html" method="POST">
+                <form action="{{ route('registerUser') }}" id="register_form" method="POST" accept-charset="UTF-8">
+                    {{ csrf_field() }}
+
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="text" class="form-control" id="email" placeholder="mail@example.com" required minlength="10">
+                        <input type="text" name="email" class="form-control" id="email" placeholder="mail@example.com" required minlength="10">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
@@ -107,7 +109,7 @@
         </div>
 
         <div class="row d-flex justify-content-center">
-            <button type="submit" class="create-account-button btn-primary btn-block">CREATE ACCOUNT</button>
+            <button type="submit" form="register_form" class="create-account-button btn-primary btn-block">CREATE ACCOUNT</button>
         </div>
 
     </div>

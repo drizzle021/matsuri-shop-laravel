@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('shipping_addresses', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('uuid')->primary();
             $table->string('first_name', 50);
             $table->string('last_name', 50);
+            $table->string('country', 10);      // beirni a dokumentaciaba hogy kicsereltuk
             $table->string('city', 26);
             $table->string('zip', 6);
             $table->string('phone', 15);

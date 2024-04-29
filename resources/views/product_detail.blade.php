@@ -15,16 +15,16 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="../../public/script.js"></script>
+    <script src="/script.js"></script>
     <header>
         <nav class="navbar navbar-expand-md navbar-white bg-white">
             <div class="container">
                 <a class="navbar-brand d-none d-lg-block" href="index.html">
-                    <img src="img/logoAsset 1@4x.png" alt="Logo">
+                    <img src="/img/logoAsset 1@4x.png" alt="Logo">
                 </a>
 
                 <a class="navbar-brand d-block d-lg-none" href="index.html">
-                    <img class="small-logo" src="img/logoAssetSmall 1@4x.png" alt="Logo">
+                    <img class="small-logo" src="/img/logoAssetSmall 1@4x.png" alt="Logo">
                 </a>
 
 
@@ -71,9 +71,6 @@
                 </ul>
             </div>
         </nav>
-
-
-
     </header>
 
 
@@ -86,36 +83,36 @@
                             <div class="col-lg-3 d-xl-block d-none">
                                 <div class="preview-side-bar">
                                     <div class="small-product-preview">
-                                        <img class="active" src="img/jigokuraku5.jpg" onclick="changePreviewImage(this)">
+                                        <img class="active" src="{{ asset('products') }}/{{ $product->main_img }}" onclick="changePreviewImage(this)">
                                     </div>
                                     <div class="small-product-preview">
-                                        <img src="img/jigokuraku5_preview1.jpg" onclick="changePreviewImage(this)">
+                                        <img src="{{ asset('products') }}/{{ $product->side_img_1 }}" onclick="changePreviewImage(this)">
                                     </div>
                                     <div class="small-product-preview">
-                                        <img src="img/jigokuraku5_preview2.jpg" onclick="changePreviewImage(this)">
+                                        <img src="{{ asset('products') }}/{{ $product->side_img_2 }}" onclick="changePreviewImage(this)">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-8 d-lg-block d-flex">
                                 <div class="large-product-preview">
-                                    <img src="img/jigokuraku5.jpg" id="largeProductIMG">
+                                    <img src="{{ asset('products') }}/{{ $product->main_img }}" id="largeProductIMG">
                                 </div>
                             </div>
                         </div>
                         <div class="row d-flex d-xl-none mt-3">
                             <div class="col-2">
                                 <div class="small-product-preview-hor">
-                                    <img class="active" src="img/jigokuraku5.jpg" onclick="changePreviewImageHorizontal(this)">
+                                    <img class="active" src="{{ asset('products') }}/{{ $product->main_img }}" onclick="changePreviewImageHorizontal(this)">
                                 </div>
                             </div>
                             <div class="col-2 ml-2">
                                 <div class="small-product-preview-hor">
-                                    <img src="img/jigokuraku5_preview1.jpg" onclick="changePreviewImageHorizontal(this)">
+                                    <img src="{{ asset('products') }}/{{ $product->side_img_1 }}" onclick="changePreviewImageHorizontal(this)">
                                 </div>
                             </div>
                             <div class="col-2 ml-2">
                                 <div class="small-product-preview-hor">
-                                    <img src="img/jigokuraku5_preview2.jpg" onclick="changePreviewImageHorizontal(this)">
+                                    <img src="{{ asset('products') }}/{{ $product->side_img_2 }}" onclick="changePreviewImageHorizontal(this)">
                                 </div>
                             </div>
                         </div>
@@ -125,8 +122,8 @@
                 <div class="col-lg-4 offset-lg-1 order-lg-2 order-1">
                     <div class="container my-lg-5">
                         <div class="row">
-                            <div class="product-title">Hell's Paradise: Jigokuraku, Vol.5</div>
-                            <div class="product-author">YUJI KAKU</div>
+                            <div class="product-title">{{ $product->name }}</div>
+                            <div class="product-author">{{ $product->author }}</div>
                         </div>
                     </div>
                     <div class="container d-lg-block d-none">
@@ -134,30 +131,39 @@
                             <div class="col-5">
                                 <div class="row">
                                     <div class="row d-flex justify-content-center">
-                                        <div class="product-price">10.00€</div>
+                                        <div class="product-price">{{ $product->price }}€</div>
                                     </div>
                                     <div class="row d-flex justify-content-center">
-                                        <div class="product-status">-IN STOCK-</div>
+                                        @if($product->stock > 0)
+                                            <div class="product-status in-stock">-IN STOCK-</div>
+                                        @else
+                                            <div class="product-status out-of-stock">-OUT OF STOCK-</div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                             <div class="col-5">
-                                <span class="product-discount">-20%<br>8.00%</span>
+                                @if($product->discount > 0)
+                                    <span class="product-discount">-{{ $product->discount * 100 }}%<br>
+                                                    {{ number_format($product->price - $product->price * $product->discount, 2, '.', ',' ) }}€</span>
+                                @endif
                             </div>
                         </div>
                         <div class="row my-0 d-flex align-items-center">
                             <div class="col-3">
-                                <select name="amount-select" class="amount-select" autocomplete="off">
-                                    <option>0</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
+                                <form action="" id="quantity_form" method="POST" accept-charset="UTF-8">
+                                    <div class="form-group">
+                                        <select name="quantity_select" class="quantity-select" autocomplete="off">
+                                            @for($i = 1; $i < $product->stock && $i <= 5; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+
+                                    </div>
+                                </form>
                             </div>
                             <div class="col-7">
-                                <button class="product-add">Add to cart</button>
+                                <button type="submit" form="quantity_form" class="product-add">Add to cart</button>
                             </div>
                         </div>
                     </div>
@@ -171,30 +177,40 @@
                 <div class="col-5">
                     <div class="row">
                         <div class="row d-flex justify-content-center">
-                            <div class="product-price">10.00€</div>
+                            <div class="product-price">{{ $product->price }}€</div>
                         </div>
                         <div class="row d-flex justify-content-center">
-                            <div class="product-status">-IN STOCK-</div>
+                            @if($product->stock > 0)
+                                <div class="product-status in-stock">-IN STOCK-</div>
+                            @else
+                                <div class="product-status out-of-stock">-OUT OF STOCK-</div>
+                            @endif
                         </div>
                     </div>
                 </div>
                 <div class="col-5 d-flex justify-content-center">
-                    <span class="product-discount">-20%<br>8.00%</span>
+                    @if($product->discount > 0)
+                        <span class="product-discount">-{{ $product->discount * 100 }}%<br>
+                                                    {{ number_format($product->price - $product->price * $product->discount, 2, '.', ',' ) }}€</span>
+                    @endif
                 </div>
             </div>
             <div class="row my-0 d-flex align-items-center justify-content-center">
                 <div class="col-3">
-                    <select name="amount-select" class="amount-select" autocomplete="off">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
+                    <form action="" id="quantity_form" method="POST" accept-charset="UTF-8">
+                        <div class="form-group">
+                            <select name="quantity_select" class="quantity-select" autocomplete="off">
+                                @for($i = 1; $i < $product->stock && $i <= 5; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+
+                        </div>
+                    </form>
+
                 </div>
                 <div class="col-7 d-flex justify-content-center">
-                    <button class="product-add">Add to cart</button>
+                    <button type="submit" form="quantity_form" class="product-add">Add to cart</button>
                 </div>
             </div>
         </div>
@@ -202,74 +218,57 @@
         <div class="container bg-white">
             <div class="row">
                 <div class="product-desc">
-                    Even an invincible ninja may not be able to survive Hell's Paradise!
-                    Gabimaru is a ninja on death row with one chance to see his wife again—by finding the elixir of
-                    immortality on a supernatural island and delivering it to the shogun. Standing in his way are his
-                    fellow convicts and the fearsome beasts that roam the island, devouring or killing anyone they encounter.
-
-                    Gabimaru and his companions are confronted with the mysteries of tao, the supernatural phenomenon
-                    that turns the beings known as Lord Tensen into fearsome enemies. And when Gabimaru begins acting
-                    strangely, is there any hope for his companions, or will they face certain death at his hands?
+                    {{ $product->description }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4 col-sm-10 d-flex justify-content-center d-lg-block">
                     <div class="product-parameters">
                         <ul>
-                            <li>Title: Hell's Paradise: Jigokuraku, Vol. 5</li>
-                            <li>Pages: 216</li>
-                            <li>Publisher: Viz Media</li>
-                            <li>Dimensions: 146 × 209 × 21 mm</li>
+                            <li>Title: {{ $product->name }}</li>
+                            @if($product->pages > 0)
+                                <li>Pages: {{ $product->pages }}</li>
+                            @endif
+                            <li>Publisher: {{ $product->publisher }}</li>
+                            <li>Dimensions: {{ $product->dimensions }}</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-6 offset-1 d-sm-none d-md-block" style="display:none">
                     <div class="image">
-                        <img src="img/Asset 1@4x.png">
+                        <img src="/img/Asset 1@4x.png">
                     </div>
                 </div>
             </div>
         </div>
 
 
-
-        <div class="container-fluid bg-dark">
-            <div class="container product-recommendation">ň
-                <div>
-                    <h2>More like this</h2>
-                    <hr>
-                </div>
-                <div class="row">
-                    <div class="col">
-                            <a href="product_detail.html">
-                                <div class="product">
-                                    <div class="product-image">
-                                        <img src="img/jigokuraku2.jpg">
+        @if(count($recommendations) > 0)
+            <div class="container-fluid bg-dark">
+                <div class="container product-recommendation">
+                    <div>
+                        <h2>More like this</h2>
+                        <hr>
+                    </div>
+                    <div class="row">
+                        @for($i = 0; $i < count($recommendations); $i++)
+                            <div class="col d-flex justify-content-center">
+                                <a href="/product/{{ $recommendations[$i]->id }}">
+                                    <div class="product">
+                                        <div class="product-image">
+                                            <img src="{{ asset('products') }}/{{ $recommendations[$i]->main_img }}">
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                    </div>
-                    <div class="col">
-                        <a href="product_detail.html">
-                            <div class="product">
-                                <div class="product-image">
-                                    <img src="img/jigokuraku1.jpg">
-                                </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="col">
-                        <a href="product_detail.html">
-                            <div class="product">
-                                <div class="product-image">
-                                    <img src="img/jigokuraku6.jpg">
-                                </div>
-                            </div>
-                        </a>
+
+                        @endfor
+
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
+
 
     </div>
 
@@ -303,7 +302,7 @@
                     </ul>
                 </div>
                 <div class="col-1 offset-3 d-md-block d-none">
-                    <img src="img/logoAssetSmall 1@4x.png">
+                    <img src="/img/logoAssetSmall 1@4x.png">
                 </div>
             </div>
         </div>

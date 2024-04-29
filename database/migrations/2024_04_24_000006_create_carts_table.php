@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shipping_methods', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name', 15);
-            $table->decimal('price');
+        Schema::create('carts', function (Blueprint $table) {
+            $table->uuid('uuid')->primary();
+            $table->uuid('user_id');
             $table->timestamps();
+
+            // Foreign keys
+            $table->foreign('user_id')->references('uuid')->on('users')->onDelete('cascade');
+
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shipping_methods');
+        Schema::dropIfExists('carts');
     }
 };
