@@ -9,5 +9,8 @@ class Series extends Model
 {
     protected $primaryKey = 'uuid';
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     use HasFactory;
 }

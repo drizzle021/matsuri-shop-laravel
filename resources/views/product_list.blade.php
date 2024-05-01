@@ -400,7 +400,7 @@
                         </form>
 
 
-                        <form action="{{ route('filterProduct') }}" method="GET" id="product_list_filter" accept-charset="UTF-8">
+                        <form action="{{ route('filterProduct', ['page'=>0]) }}" method="GET" id="product_list_filter" accept-charset="UTF-8">
                             {{ csrf_field() }}
 
                             <div class="row pb-3 justify-content-center">
@@ -408,12 +408,12 @@
                             </div>
                             <div class="row justify-content-center pb-3">
                                 <label class="form-label" for="filter-range-price-min">Price from (€):</label>
-                                <input type="range" id="filter-range-price-min" name="filter-range-price-min" value="0" min="0" max="300">
+                                <input type="range" id="filter-range-price-min" name="filter-range-price-min" value="0" min="0" max="300" step="5">
                                 <input type="number" id="filter-min-text" value="0" min="0" max="300" step="5" class="form-control" onchange="changeSliderValue(this.value, 'filter-range-price-min')">
                             </div>
                             <div class="row justify-content-center pb-5">
                                 <label class="form-label" for="filter-range-price-max">Price to (€):</label>
-                                <input type="range" id="filter-range-price-max" name="filter-range-price-max" value="300" min="0" max="300">
+                                <input type="range" id="filter-range-price-max" name="filter-range-price-max" value="300" min="0" max="300" step="5">
                                 <input type="number" id="filter-max-text" value="300" min="0" max="300"  step="5" class="form-control" onchange="changeSliderValue(this.value, 'filter-range-price-max')">
                             </div>
                             <div class="row justify-content-center pb-4">
@@ -423,7 +423,7 @@
                                     <option value="az_desc">A-Z: Descending</option>
                                     <option value="pri_hi_lo">Price: High - Low</option>
                                     <option value="pri_lo_hi">Price: Low - High</option>
-                                    <option value="disc_lo_hi">Discount: Low - High</option>
+                                    <option value="disc_hi_lo">Discount: High - Low</option>
                                 </select>
                             </div>
                             <div class="row pb-4">
@@ -439,7 +439,7 @@
                                     <ul class="navbar-nav ml-auto">
                                         @foreach($categories as $category)
                                             <li class="nav-item">
-                                                <input type="checkbox" value="{{ $category->name }}" name="category">
+                                                <input type="checkbox" value="{{ $category->name }}" name="category[]">
                                                 <label>{{ $category->name }}</label>
                                             </li>
 
@@ -460,7 +460,7 @@
                                     <ul class="navbar-nav ml-auto">
                                         @foreach($series as $serie)
                                             <li class="nav-item">
-                                                <input type="checkbox" name="series" value="{{ $serie->name }}">
+                                                <input type="checkbox" value="{{ $serie->name }}" name="series[]">
                                                 <label>{{ $serie->name }}</label>
                                             </li>
 
@@ -537,17 +537,63 @@
 
             {{-- first page active --}}
             @if($currentPage == 0)
-                <li class="page-item active"><a class="page-link" href="/product_list/{{ $currentPage }}{{ isset($search) ? '?search='.$search : '' }}">{{ $currentPage +1 }}</a></li>
+                <li class="page-item active">
+                    <a class="page-link" href="/product_list/{{ $currentPage }}
+                    {{ isset($search) ? '?search='.$search : '' }}
+                    {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
+                    {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
+                    {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
+                    @if(isset($category_filter))
+                        @foreach($category_filter as $filter)
+                            '&category[]=' {{ $filter }}
+                        @endforeach
+                    @endif
+                    @if(isset($series_filter))
+                        @foreach($series_filter as $filter)
+                            '&series[]=' {{ $filter }}
+                        @endforeach
+                    @endif
+                    ">{{ $currentPage +1 }}</a></li>
 
                 @if($pageCount > 2)
                     <li class="page-item mx-4">...</li>
                 @endif
 
                 @if($pageCount > 1)
-                    <li class="page-item"><a class="page-link" href="/product_list/{{ $pageCount-1 }}{{ isset($search) ? '?search='.$search : '' }}">{{ $pageCount }}</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="/product_list/{{ $pageCount-1 }}
+                        {{ isset($search) ? '?search='.$search : '' }}
+                        {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
+                        {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
+                        {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
+                        @if(isset($category_filter))
+                            @foreach($category_filter as $filter)
+                                '&category[]=' {{ $filter }}
+                            @endforeach
+                        @endif
+                        @if(isset($series_filter))
+                            @foreach($series_filter as $filter)
+                                '&series[]=' {{ $filter }}
+                            @endforeach
+                        @endif
+                        ">{{ $pageCount }}</a></li>
 
                     <li class="page-item">
-                        <a class="page-link" href="/product_list/{{ $currentPage +1 }}{{ isset($search) ? '?search='.$search : '' }}" aria-label="Next">
+                        <a class="page-link" href="/product_list/{{ $currentPage +1 }}
+                        {{ isset($search) ? '?search='.$search : '' }}
+                        {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
+                        {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
+                        {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
+                        @if(isset($category_filter))
+                            @foreach($category_filter as $filter)
+                                '&category[]=' {{ $filter }}
+                            @endforeach
+                        @endif
+                        @if(isset($series_filter))
+                            @foreach($series_filter as $filter)
+                                '&series[]=' {{ $filter }}
+                            @endforeach
+                        @endif" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -561,19 +607,61 @@
             {{-- last page active --}}
             @elseif($currentPage == $pageCount -1 && $pageCount > 1)
                 <li class="page-item">
-                    <a class="page-link" href="/product_list/{{ $currentPage -1 }}{{ isset($search) ? '?search='.$search : '' }}" aria-label="Previous">
+                    <a class="page-link" href="/product_list/{{ $currentPage -1 }}
+                    {{ isset($search) ? '?search='.$search : '' }}
+                    {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
+                        {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
+                        {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
+                        @if(isset($category_filter))
+                            @foreach($category_filter as $filter)
+                                '&category[]=' {{ $filter }}
+                            @endforeach
+                        @endif
+                        @if(isset($series_filter))
+                            @foreach($series_filter as $filter)
+                                '&series[]=' {{ $filter }}
+                            @endforeach
+                        @endif" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
 
-                <li class="page-item"><a class="page-link" href="/product_list/0{{ isset($search) ? '?search='.$search : '' }}">1</a></li>
+                <li class="page-item"><a class="page-link" href="/product_list/0
+                    {{ isset($search) ? '?search='.$search : '' }}
+                    {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
+                            {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
+                            {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
+                            @if(isset($category_filter))
+                                @foreach($category_filter as $filter)
+                                    '&category[]=' {{ $filter }}
+                                @endforeach
+                            @endif
+                            @if(isset($series_filter))
+                                @foreach($series_filter as $filter)
+                                    '&series[]=' {{ $filter }}
+                                @endforeach
+                            @endif">1</a></li>
 
                 @if($pageCount > 2)
                     <li class="page-item mx-4">...</li>
                 @endif
 
                 @if($pageCount > 1)
-                    <li class="page-item active"><a class="page-link" href="/product_list/{{ $pageCount-1 }}{{ isset($search) ? '?search='.$search : '' }}">{{ $pageCount }}</a></li>
+                    <li class="page-item active"><a class="page-link" href="/product_list/{{ $pageCount-1 }}
+                        {{ isset($search) ? '?search='.$search : '' }}
+                        {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
+                            {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
+                            {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
+                            @if(isset($category_filter))
+                                @foreach($category_filter as $filter)
+                                    '&category[]=' {{ $filter }}
+                                @endforeach
+                            @endif
+                            @if(isset($series_filter))
+                                @foreach($series_filter as $filter)
+                                    '&series[]=' {{ $filter }}
+                                @endforeach
+                            @endif">{{ $pageCount }}</a></li>
 
                 @endif
 
@@ -619,6 +707,6 @@
 </footer>
 
 
-<script src="script.js"></script>
+<script src="/script.js"></script>
 </body>
 </html>

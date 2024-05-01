@@ -37,8 +37,72 @@ class product_listController extends Controller
 
             \Log::info(json_encode($search));
 
-            $products = DB::table('products')->where('name', 'ilike', "%$search%")->skip($page * 10)->take(10)->get();
+            // search title, author
+            $products = DB::table('products')->where(function ($query) use ($search){
+                $query->where('name', 'ilike', "%$search%")
+                    ->orWhere('author', 'ilike', "%$search%");
+            })->get();
+
             $pageCount = (int)(count($products)/10 + 1);
+
+            $products = $products->skip($page * 10)->take(10);
+        }
+
+        // Filter
+        if ($request->has('filter-range-price-min')){
+            $filterPriceMin = $request->input('filter-range-price-min');
+            $filterPriceMax = $request->input('filter-range-price-max');
+            $filterOrderBy = $request->input('product-list-order-by');
+            $filterCategory = $request->input('category');
+            $filterSeries = $request->input('series');
+
+            $products = DB::table('products')->whereBetween('price', [$filterPriceMin, $filterPriceMax]);
+
+            if($filterCategory == null){
+                $filterCategory = Category::all()->pluck('uuid')->toArray();
+            }
+            else{
+                $filterCategory = Category::all()->whereIn('name', $filterCategory)->pluck('uuid')->toArray();
+            }
+
+//            print_r($filterCategory);
+
+            if($filterSeries == null){
+                $filterSeries = Series::all()->pluck('uuid')->toArray();
+            }
+            else{
+                $filterSeries = Series::all()->whereIn('name', $filterSeries)->pluck('uuid')->toArray();
+            }
+
+//            $categoriesAndSeries = array_merge($filterCategory, $filterSeries);
+
+            $products = $products->where(function ($query) use($filterCategory, $filterSeries){
+                $query->whereIn('category_id', $filterCategory)
+                    ->whereIn('series_id', $filterSeries);
+            });
+
+            // ORDERING
+            if($filterOrderBy == 'az_asc'){
+                $products->orderBy('name', 'asc');
+            }
+            elseif ($filterOrderBy == 'az_desc'){
+                $products->orderBy('name', 'desc');
+            }
+            elseif ($filterOrderBy == 'pri_hi_lo'){
+                $products->orderBy('price', 'desc');
+            }
+            elseif ($filterOrderBy == 'pri_lo_hi'){
+                $products->orderBy('price', 'asc');
+            }
+            elseif ($filterOrderBy == 'disc_hi_lo'){
+                $products->orderBy('discount', 'desc');
+            }
+
+            $products = $products->get();
+
+            $pageCount = (int)(count($products)/10 + 1);
+
+            $products = $products->skip($page * 10)->take(10);
         }
 
 
@@ -48,7 +112,12 @@ class product_listController extends Controller
             'products' => $products,
             'pageCount' => $pageCount,
             'currentPage' => $page,
-            'search' => $request->input('search')
+            'search' => $request->input('search'),
+            'filter_range_price_min' => $request->input('filter-range-price-min'),
+            'filter_range_price_max' => $request->input('filter-range-price-max'),
+            'product_list_order_by' => $request->input('product-list-order-by'),
+            'category_filter' => $request->input('category'),
+            'series_filter' => $request->input('series')
         ]);
     }
 
@@ -238,10 +307,10 @@ class product_listController extends Controller
         return $this->index($request);
     }
 
-    public function filterProduct(Request $request)
+    public function filterProduct(int $page,Request $request)
     {
 
-
+        return $this->index($request);
 
     }
 

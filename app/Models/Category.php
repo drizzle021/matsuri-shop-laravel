@@ -9,5 +9,13 @@ class Category extends Model
 {
     protected $primaryKey = 'uuid';
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+//    public function Product()
+//    {
+//        return $this->belongsTo('App\Models\Product', 'category_id');
+//    }
+
     use HasFactory;
 }

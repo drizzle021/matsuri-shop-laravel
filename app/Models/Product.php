@@ -11,5 +11,10 @@ class Product extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+//    public function category()
+//    {
+//        return $this->hasOne('App\Models\Category')->pluck('name');
+//    }
+
     use HasFactory;
 }

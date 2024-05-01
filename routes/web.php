@@ -80,7 +80,17 @@ Route::get('/product_list/{page}{request?}', [product_listController::class, 'in
 Route::get('/product_list/{page}{search?}', [product_listController::class, 'searchProduct'])->name('searchProduct');
 
 // FILTER PRODUCT LIST
-Route::get('/product_list/filterProduct', [product_listController::class, 'filterProduct'])->name('filterProduct');
+Route::get('/product_list/
+{page}
+{filter-range-price-min?}
+{filter-range-price-max?}
+{product-list-order-by?}
+{category?}
+{series?}', [product_listController::class, 'filterProduct'])->name('filterProduct');
+
+//filter-range-price-min=0 & filter-range-price-max=5 & product-list-order-by=pri_hi_lo
+// & category=Manga & category=Box+Set
+// & series=Orange & series=Erased
 
 
 // ADD PRODUCT

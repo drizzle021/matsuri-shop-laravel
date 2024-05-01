@@ -30,7 +30,7 @@
 
             <ul class="navbar-nav d-none d-lg-block">
                 <li class="nav-item">
-                    <a class="nav-link" href="/product_list">PRODUCTS</a>
+                    <a class="nav-link" href="/product_list/0">PRODUCTS</a>
                 </li>
             </ul>
 
@@ -43,7 +43,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto d-lg-none">
                     <li class="nav-item">
-                        <a class="nav-link" href="/product_list">PRODUCTS</a>
+                        <a class="nav-link" href="/product_list/0">PRODUCTS</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/shopping_cart">CART</a>
