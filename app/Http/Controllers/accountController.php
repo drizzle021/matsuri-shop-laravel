@@ -14,6 +14,13 @@ class accountController extends Controller
         return view('account');
     }
 
+    public function accountUser()
+    {
+
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      */

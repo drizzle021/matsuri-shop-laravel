@@ -14,6 +14,13 @@ class checkoutController extends Controller
         return view('checkout');
     }
 
+    public function checkoutUser()
+    {
+
+    }
+
+
+
     /**
      * Show the form for creating a new resource.
      */
