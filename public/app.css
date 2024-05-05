@@ -1178,18 +1178,18 @@ input[type="number"]{
   font-weight: bold;
   padding: 10px;
 }
-#addProductModal, #editProductModal #addCategoryModal, #addSeriesModal, #failureModal, #successModal{
+#addProductModal, .modal, #addCategoryModal, #addSeriesModal, #failureModal, #successModal{
   font-family: "Inter", "sans-serif";
 }
-#addProductModal .modal-content ,#editProductModal .modal-content, #addCategoryModal .modal-content, #addSeriesModal .modal-content, #failureModal .modal-content, #successModal .modal-content{
+#addProductModal .modal-content , .modal .modal-content, #addCategoryModal .modal-content, #addSeriesModal .modal-content, #failureModal .modal-content, #successModal .modal-content{
   background-color: #212529;
 }
-#addProductModal .btn-primary, #editProductModal .btn-primary, #addCategoryModal .btn-primary, #addSeriesModal .btn-primary{
+#addProductModal .btn-primary, .modal .btn-primary, #addCategoryModal .btn-primary, #addSeriesModal .btn-primary{
   background-color:#8C69EF;
   border-color: #8C69EF;
 }
 
-#successModal .modal-body, #failureModal .modal-body{
+#successModal .modal-body, #failureModal .modal-body, #updateModal .modal-body {
     color: #9C9C9C;
 }
 

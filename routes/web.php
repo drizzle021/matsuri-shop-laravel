@@ -10,6 +10,9 @@ use App\Http\Controllers\product_detailController;
 use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\shopping_cartController;
 
+// Breeze
+use App\Http\Controllers\ProfileController;
+
 
 // INDEX
 Route::resource('/', indexController::class);
@@ -18,22 +21,14 @@ Route::resource('/', indexController::class);
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // REGISTER
 
-Route::get('/register', function () {
-    return view('register');
-});
-
-Route::get('/registerUser', [registerController::class, 'registerUser'])->name('registerUser');
-Route::post('/registerUser', [registerController::class, 'registerUser'])->name('registerUser');
+Route::post('/register/registerUser', [registerController::class, 'registerUser'])->name('registerUser');
+Route::get('/register', [registerController::class, 'index'])->name('register');
 
 
 // LOGIN
 
-Route::get('/login', function () {
-    return view('login');
-});
-
-Route::get('/loginUser', [loginController::class, 'loginUser'])->name('loginUser');
-Route::post('/loginUser', [loginController::class, 'loginUser'])->name('loginUser');
+Route::post('/loginUser/loginUser', [loginController::class, 'loginUser'])->name('loginUser');
+Route::get('/login', [loginController::class, 'index'])->name('loginUser');
 
 
 // ACCOUNT
@@ -105,8 +100,26 @@ Route::post('/product_list/addCategory', [product_listController::class, 'addCat
 Route::get('/product_list/addSeries', [product_listController::class, 'addSeries'])->name('addSeries');
 Route::post('/product_list/addSeries', [product_listController::class, 'addSeries'])->name('addSeries');
 
+// EDIT PRODUCT / DELETE
+//Route::get('/product_list/{page}/editProduct{product_id?}{category-select?}{series-select?}{action?}', [product_listController::class, 'editProduct'])->name('editProduct');
+//Route::post('/product_list/{page}/editProduct{product_id?}{category-select?}{series-select?}{action?}', [product_listController::class, 'editProduct'])->name('editProduct');
+
+Route::get('/product_list/editProduct', [product_listController::class, 'editProduct'])->name('editProduct');
+Route::post('/product_list/editProduct', [product_listController::class, 'editProduct'])->name('editProduct');
 
 
 
+///////////////////////////////////////
 
 
+Route::get('/dashboard', function () {
+    return view('account');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__ . '/auth.php';

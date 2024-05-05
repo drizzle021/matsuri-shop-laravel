@@ -129,14 +129,14 @@ class product_listController extends Controller
         // Generate a UUID
         $productId = Uuid::uuid4()->toString();
 
-        $category_id = DB::table('categories')->where('name', $request->category_select)->value('uuid');
-        $series_id = DB::table('series')->where('name', $request->series_select)->value('uuid');
+//        $category_id = DB::table('categories')->where('name', $request->category_select)->value('uuid');
+//        $series_id = DB::table('series')->where('name', $request->series_select)->value('uuid');
 
         $newProduct = new Product;
         $newProduct->id = $productId;
 
-        $newProduct->category_id = $category_id;
-        $newProduct->series_id = $series_id;
+        $newProduct->category_id = $request->category_select;
+        $newProduct->series_id = $request->series_select;
 
         $newProduct->name = $request->name;
         $newProduct->author = strtoupper($request->author);     // optional
@@ -172,7 +172,7 @@ class product_listController extends Controller
 
 //        return redirect()->action(product_listController::class,'index');
 
-        return redirect()->route('productList')->with('success', 'Product added');
+        return redirect()->route('productList', ['page'=>0])->with('success', 'Product added');
     }
 
     public function addCategory(Request $request)
@@ -187,10 +187,10 @@ class product_listController extends Controller
             $newCategory->name = $request->name;
             $newCategory->save();
 
-            return redirect()->route('productList')->with('success', 'Category added');
+            return redirect()->route('productList', ['page'=>0])->with('success', 'Category added');
         }
         else{
-            return redirect()->route('productList')->with('failure', 'Failure: Category already exists');
+            return redirect()->route('productList', ['page'=>0])->with('failure', 'Failure: Category already exists');
         }
 
 
@@ -208,101 +208,88 @@ class product_listController extends Controller
             $newSeries->name = $request->name;
             $newSeries->save();
 
-            return redirect()->route('productList')->with('success', 'Series added');
+            return redirect()->route('productList', ['page'=>0])->with('success', 'Series added');
         }
         else{
-            return redirect()->route('productList')->with('failure', 'Failure: Series already exists');
+            return redirect()->route('productList', ['page'=>0])->with('failure', 'Failure: Series already exists');
         }
     }
 
-    public function editProduct(Request $request)
+    public function editProduct( Request $request)
     {
         // just log to see if it works
-        \Log::info(json_encode($request->all()));
+//        \Log::info(json_encode($request->all()));
 
         // Generate a UUID for the new user
-        $productId = Uuid::uuid4()->toString();
+//        $productId = Uuid::uuid4()->toString();
 
-        $category_id = DB::table('categories')->where('name', $request->category)->value('id');
-        $series_id = DB::table('series')->where('name', $request->series)->value('id');
+        $product = Product::where('id', $request->input('product_id'))->first();
+//        $category_id = DB::table('categories')->where('name', $request->category)->value('id');
+//        $series_id = DB::table('series')->where('name', $request->series)->value('id');
 
-        $newProduct = new Product;
-        $newProduct->uuid = $productId;
+        if ($request->input("action") == "update"){
+            $product->category_id = $request->category_select;
+            $product->series_id = $request->series_select;
 
-        $newProduct->category_id = $category_id;
-        $newProduct->series_id = $series_id;
+            $product->name = $request->edit_title;
+            $product->author = $request->edit_author;     // optional
 
-        $newProduct->name = $request->add_product_product_title;
-        $newProduct->author = $request->author;     // optional
+            $product->pages = $request->edit_pages;       // optional
+            $product->publisher = $request->edit_publisher;
+            $product->dimensions = $request->edit_dimensions;
+            $product->price = $request->edit_price;
+            $product->discount = $request->edit_discount;
+            $product->description = $request->edit_description;
 
-        $newProduct->pages = $request->pages;       // optional
-        $newProduct->publisher = $request->publisher;
-        $newProduct->dimensions = $request->dimensions;
-        $newProduct->price = $request->price;
-        $newProduct->discount = $request->discount;
-        $newProduct->description = $request->description;
-        $newProduct->main_img = $request->main_img;
-        $newProduct->side_img_1 = $request->side_img_1;
-        $newProduct->side_img_2 = $request->side_img_2;
+            if ($request->edit_main_img != null){
+                if(Storage::exists('public/products/'.$product->main_img)){
+                    Storage::delete('public/products/'.$product->main_img);
+                }
+                $tmp = $request->file('edit_main_img')->storeAs('public/products', $request->edit_main_img->getClientOriginalName());
+                $product->main_img = $request->edit_main_img->getClientOriginalName();
+            }
+            if ($request->edit_side_img_1 != null){
+                if(Storage::exists('public/products/'.$product->side_img_1)){
+                    Storage::delete('public/products/'.$product->side_img_1);
+                }
+                $tmp1 = $request->file('edit_side_img_1')->storeAs('public/products', $request->edit_side_img_1->getClientOriginalName());
+                $product->side_img_1 = $request->edit_side_img_1->getClientOriginalName();
+            }
+            if ($request->edit_side_img_2 != null){
+                if(Storage::exists('public/products/'.$product->side_img_2)){
+                    Storage::delete('public/products/'.$product->side_img_2);
+                }
+                $tmp2 = $request->file('edit_side_img_2')->storeAs('public/products', $request->edit_side_img_2->getClientOriginalName());
+                $product->side_img_2 = $request->edit_side_img_2->getClientOriginalName();
+            }
 
-        $newProduct->save();
-        return view('product_list');
+            $product->save();
+
+            return redirect()->route('productList', ['page'=>0])->with('update', 'Product updated');
+//            return view('index', ['page' => $page]);
+        }
+        elseif ($request->input("action") == "delete"){
+
+            $product->delete();
+
+            if(Storage::exists('public/products/'.$product->main_img)){
+                Storage::delete('public/products/'.$product->main_img);
+            }
+            if(Storage::exists('public/products/'.$product->side_img_1)){
+                Storage::delete('public/products/'.$product->side_img_1);
+            }
+            if(Storage::exists('public/products/'.$product->side_img_2)){
+                Storage::delete('public/products/'.$product->side_img_2);
+            }
+
+            return redirect()->route('productList', ['page'=>0])->with('update', 'Product deleted');
+        }
+
     }
 
-    public function removeProduct(Request $request)
-    {
-        // just log to see if it works
-        \Log::info(json_encode($request->all()));
-
-        // Generate a UUID for the new user
-        $productId = Uuid::uuid4()->toString();
-
-        $category_id = DB::table('categories')->where('name', $request->category)->value('id');
-        $series_id = DB::table('series')->where('name', $request->series)->value('id');
-
-        $newProduct = new Product;
-        $newProduct->uuid = $productId;
-
-        $newProduct->category_id = $category_id;
-        $newProduct->series_id = $series_id;
-
-        $newProduct->name = $request->add_product_product_title;
-        $newProduct->author = $request->author;     // optional
-
-        $newProduct->pages = $request->pages;       // optional
-        $newProduct->publisher = $request->publisher;
-        $newProduct->dimensions = $request->dimensions;
-        $newProduct->price = $request->price;
-        $newProduct->discount = $request->discount;
-        $newProduct->description = $request->description;
-        $newProduct->main_img = $request->main_img;
-        $newProduct->side_img_1 = $request->side_img_1;
-        $newProduct->side_img_2 = $request->side_img_2;
-
-        $newProduct->save();
-        return view('product_list');
-    }
 
     public function searchProduct(int $page, Request $request)
     {
-//        $categories = Category::all();
-//        $series = Series::all();
-//
-//        // $search = $request->input('search');
-//        $search = $request->string('search')->trim();
-//
-//        $products = DB::table('products')->where('name', 'like', "%$request%")->get();
-//
-//        $pageCount = count($products);
-//        $page = 1;
-//
-//        return view('product_list', [
-//            'categories' => $categories,
-//            'series' => $series,
-//            'products' => $products,
-//            'pageCount' => $pageCount,
-//            'currentPage' => $page
-//        ]);
 
         return $this->index($request);
     }

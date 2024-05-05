@@ -96,7 +96,7 @@
                         <label for="add-product-category" class="form-label">Category:</label>
                         <select name="category_select" class="category-select" id="add-product-category" autocomplete="off">
                             @foreach ($categories as $category)
-                                <option value="{{ $category->name }}">
+                                <option value="{{ $category->uuid }}">
                                     {{ $category->name }}
                                 </option>
                             @endforeach
@@ -106,7 +106,7 @@
                         <label for="add-product-series" class="form-label">Anime/Manga series:</label>
                         <select name="series_select" class="category-select" id="add-product-series" autocomplete="off">
                             @foreach ($series as $serie)
-                                <option value="{{ $serie->name }}">
+                                <option value="{{ $serie->uuid }}">
                                     {{ $serie->name }}
                                 </option>
                             @endforeach
@@ -220,6 +220,30 @@
     </script>
 @endif
 
+@if(session('update'))
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Update</h5>
+                </div>
+                <div class="modal-body">
+                    {{ session('update') }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            $('#updateModal').modal('show');
+        });
+    </script>
+@endif
+
 
 <!-- Add Category Modal -->
 <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel">
@@ -273,89 +297,112 @@
 
 
 <!-- Edit Product Modal -->
-<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="edit-product-category" class="form-label">Category:</label>
-                        <select name="category-select" class="category-select" id="edit-product-category" autocomplete="off">
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->name }}">
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-series" class="form-label">Anime/Manga series:</label>
-                        <select name="series-select" class="category-select" id="edit-product-series" autocomplete="off">
-                            @foreach ($series as $serie)
-                                <option value="{{ $serie->name }}">
-                                    {{ $serie->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-product-title" class="form-label">Product Title:</label>
-                        <input type="text" class="form-control" id="edit-product-product-title">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-author" class="form-label">Author (optional):</label>
-                        <input type="text" class="form-control" id="edit-product-author">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-pages" class="form-label">Pages (optional):</label>
-                        <input type="number" class="form-control" id="edit-product-pages" min="0" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-publisher" class="form-label">Publisher:</label>
-                        <input type="text" class="form-control" id="edit-product-publisher">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-dimensions" class="form-label">Dimensions:</label>
-                        <input type="text" class="form-control" id="edit-product-dimensions">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-price" class="form-label">Price:</label>
-                        <input type="number" class="form-control" id="edit-product-price" min="1" max="5000" step="0.01" value="20" >
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-discount" class="form-label">Discount:</label>
-                        <input type="number" class="form-control" id="edit-product-discount" min="0" max="1" step="0.01" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-description" class="form-label">Description:</label>
-                        <textarea class="form-control" id="edit-product-description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-main-picture" class="form-label">Main image:</label>
-                        <input type="file" class="form-control" id="edit-product-main-picture">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-side-picture1" class="form-label">Side image 1:</label>
-                        <input type="file" class="form-control" id="edit-product-side-picture1">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-product-side-picture2" class="form-label">Side image 2:</label>
-                        <input type="file" class="form-control" id="edit-product-side-picture2">
-                    </div>
+@foreach( $products as $product)
+    <div class="modal fade" id="edit{{ $product->id }}" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('editProduct') }}" id="edit_form{{ $product->id }}" method="POST" accept-charset="UTF-8" enctype="multipart/form-data">
+                        {{ csrf_field() }}
 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Update</button>
-                <button type="button" class="btn btn-primary">Delete</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <div class="form-group">
+                            <label for="edit-product-id" class="form-label">ID:</label>
+                            <input type="text" class="form-control" id="edit-product-id" name="product_id" value="{{ $product->id }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-category" class="form-label">Category:</label>
+                            <select name="category_select" class="category-select" id="edit-product-category" autocomplete="off">
+                                @foreach ( $categories as $category)
+                                    @if( $category->uuid == $product->category_id)
+                                        <option value="{{ $category->uuid }}" selected="selected">
+                                            {{ $category->name }}
+                                        </option>
+                                    @else
+                                        <option value="{{ $category->uuid }}">
+                                            {{ $category->name }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-series" class="form-label">Anime/Manga series:</label>
+                            <select name="series_select" class="category-select" id="edit-product-series" autocomplete="off">
+                                @foreach ( $series as $serie)
+                                    @if( $serie->uuid == $product->series_id)
+                                        <option value="{{ $serie->uuid }}" selected="selected">
+                                            {{ $serie->name }}
+                                        </option>
+                                    @else
+                                        <option value="{{ $serie->uuid }}">
+                                            {{ $serie->name }}
+                                        </option>
+                                    @endif
+
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-product-title" class="form-label">Product Title:</label>
+                            <input type="text" class="form-control" id="edit-product-product-title" value="{{ $product->name }}" name="edit_title">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-author" class="form-label">Author (optional):</label>
+                            <input type="text" class="form-control" id="edit-product-author" value="{{ $product->author }}" name="edit_author">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-pages" class="form-label">Pages (optional):</label>
+                            <input type="number" class="form-control" id="edit-product-pages" min="0" value="{{ $product->pages }}" name="edit_pages">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-publisher" class="form-label">Publisher:</label>
+                            <input type="text" class="form-control" id="edit-product-publisher" value="{{ $product->publisher }}" name="edit_publisher">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-dimensions" class="form-label">Dimensions:</label>
+                            <input type="text" class="form-control" id="edit-product-dimensions" value="{{ $product->dimensions }}" name="edit_dimensions">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-price" class="form-label">Price:</label>
+                            <input type="number" class="form-control" id="edit-product-price" min="1" max="5000" step="0.01" value="{{ $product->price }}" name="edit_price">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-discount" class="form-label">Discount:</label>
+                            <input type="number" class="form-control" id="edit-product-discount" min="0" max="1" step="0.01" value="{{ $product->discount }}" name="edit_discount">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-description" class="form-label">Description:</label>
+                            <textarea class="form-control" id="edit-product-description" name="edit_description">{{ $product->description }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-main-picture" class="form-label">Main image:</label>
+                            <input type="file" class="form-control" id="edit-product-main-picture" value="{{ $product->main_img }}" name="edit_main_img">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-side-picture1" class="form-label">Side image 1:</label>
+                            <input type="file" class="form-control" id="edit-product-side-picture1" value="{{ $product->side_img_1 }}" name="edit_side_img_1">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-side-picture2" class="form-label">Side image 2:</label>
+                            <input type="file" class="form-control" id="edit-product-side-picture2" value="{{ $product->side_img_2 }}" name="edit_side_img_2">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="edit_form{{ $product->id }}" class="btn btn-primary" name="action" value="update">Update</button>
+                    <button type="submit" form="edit_form{{ $product->id }}" class="btn btn-primary" name="action" value="delete">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+
+@endforeach
 
 
 <div class="product-list-background">
@@ -493,7 +540,7 @@
                                                             <a href="/product/{{ $products[2*$i+$j]->id }}" class="detail">Detail</a>
                                                         </div>
                                                         <div class="col-5">
-                                                            <button class="edit-product-button" type="button" data-toggle="modal" data-target="#editProductModal">Edit</button>
+                                                            <button class="edit-product-button" type="button" data-toggle="modal" data-target="#edit{{ $products[2*$i+$j]->id }}">Edit</button>
                                                         </div>
 
                                                     </div>
